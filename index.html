@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
-  <meta name="theme-color" content="#05070c" />
+  <meta name="theme-color" content="#04070c" />
   <title>MIRRORREALM AI</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -11,45 +11,59 @@
   <main id="app">
     <video id="camera" autoplay playsinline muted></video>
     <canvas id="fx"></canvas>
-    <div id="scanGrid" class="scan-grid"></div>
+    <canvas id="scanOverlay"></canvas>
 
     <header class="topbar glass">
       <button id="settingsBtn" class="icon-btn">⚙️</button>
       <div class="brand-wrap">
         <div class="brand">MIRRORREALM</div>
-        <div id="modeBadge" class="mode-badge">CHECKING AR…</div>
+        <div id="modeBadge" class="mode-badge">REALITY ENGINE</div>
       </div>
       <button id="cameraFlipBtn" class="icon-btn">↻</button>
     </header>
 
     <section id="permissionCard" class="center-card glass">
-      <div class="logo-orb">◉</div>
-      <h1>MIRRORREALM AI</h1>
-      <p>Gerçek dünyayı paralel bir sandbox dünyasına dönüştür.</p>
-      <button id="startBtn" class="primary-btn">OYNA</button>
-      <small>Kamera görüntüsü varsayılan olarak cihazında kalır.</small>
+      <div class="logo-orb"><span>◈</span></div>
+      <h1>MIRRORREALM <em>AI</em></h1>
+      <p>Odanı tek bir efektle değil, tüm yüzeyi kaplayan alternatif bir dünyaya dönüştür.</p>
+      <button id="startBtn" class="primary-btn">DÜNYAYI TARA</button>
+      <small>Kamera cihazında kalır. Bulut AI yalnızca komut metnini işler.</small>
     </section>
 
     <section id="scanHud" class="scan-hud hidden">
-      <div class="scan-ring"></div>
-      <h2>ÇEVRENİ TARA…</h2>
-      <p id="scanText">Yüzeyler aranıyor</p>
+      <div class="scan-core"><div class="scan-orbit"></div><div class="scan-dot"></div></div>
+      <h2>ÇEVRENİ TARA</h2>
+      <p id="scanText">Kamera dengeleniyor…</p>
       <div class="progress"><span id="scanProgress"></span></div>
+      <div class="scan-tip">Telefonu yavaşça sağa ve sola çevir</div>
     </section>
+
+    <div id="surfaceHud" class="surface-hud hidden">
+      <span class="pulse-dot"></span>
+      <strong id="surfaceLabel">FLOOR MESH</strong>
+      <span id="surfaceConfidence">EST. 82%</span>
+    </div>
 
     <div id="readyToast" class="ready-toast hidden">DÜNYA HAZIR</div>
 
     <aside id="aiPanel" class="panel glass hidden">
       <div class="panel-head"><strong>✨ AI WORLD GENERATOR</strong><button data-close="aiPanel">×</button></div>
-      <textarea id="aiPrompt" placeholder="Dünyanı tarif et…\nÖrn: Odamı büyülü bir buz krallığına dönüştür."></textarea>
+      <textarea id="aiPrompt" placeholder="Örn: Zemini lav yap, ortamı uzay üssüne dönüştür."></textarea>
+      <div class="prompt-chips">
+        <button data-prompt="Her yeri buz krallığı yap">❄️ Buz Krallığı</button>
+        <button data-prompt="Zemini lav yap">🌋 Lav Dünyası</button>
+        <button data-prompt="Zemini uzaya dönüştür">🌌 Uzay</button>
+      </div>
       <button id="aiGenerateBtn" class="primary-btn">DÜNYAYI OLUŞTUR</button>
       <div id="aiStatus" class="status-line">AI hazır.</div>
     </aside>
 
     <aside id="elementsPanel" class="panel glass hidden">
       <div class="panel-head"><strong>🔥 WORLD BRUSH</strong><button data-close="elementsPanel">×</button></div>
+      <div class="brush-mode"><span>HEDEF</span><strong>🟦 TÜM ZEMİN</strong></div>
       <div id="elementGrid" class="element-grid"></div>
-      <div class="hint">Bir element seç, sonra kameradaki yüzeye dokun.</div>
+      <button id="applyFloorBtn" class="primary-btn">TÜM ZEMİNE UYGULA</button>
+      <div class="hint">Tek nokta değil: seçilen dünya bütün tahmini zemin yüzeyine uygulanır.</div>
     </aside>
 
     <aside id="settingsPanel" class="panel glass hidden">
@@ -57,7 +71,9 @@
       <label>Grafik kalitesi
         <select id="qualitySelect"><option>LOW</option><option selected>MEDIUM</option><option>HIGH</option><option>ULTRA</option></select>
       </label>
-      <label class="switch-row"><span>Tarama çizgileri</span><input id="gridToggle" type="checkbox" checked /></label>
+      <label class="switch-row"><span>Floor mesh çizgileri</span><input id="meshToggle" type="checkbox" checked /></label>
+      <label class="switch-row"><span>Hareket sensörü</span><input id="motionToggle" type="checkbox" checked /></label>
+      <button id="recalibrateBtn" class="secondary-btn">ZEMİNİ YENİDEN TARA</button>
       <div class="status-line" id="capabilityText">Cihaz özellikleri kontrol ediliyor…</div>
     </aside>
 
@@ -67,15 +83,13 @@
     </div>
 
     <nav class="toolbar glass">
-      <button data-tool="elements">🔥<span>Elements</span></button>
+      <button data-tool="elements" class="active">🔥<span>Elements</span></button>
       <button data-tool="portal">🌀<span>Portal</span></button>
       <button data-tool="ai">✨<span>AI</span></button>
       <button data-tool="spawn">🐉<span>Spawn</span></button>
       <button data-tool="chaos">🌪️<span>Chaos</span></button>
       <button data-tool="games">🎮<span>Games</span></button>
     </nav>
-
-    <div id="unsupportedNote" class="unsupported hidden"></div>
   </main>
 
   <script src="app.js" defer></script>
