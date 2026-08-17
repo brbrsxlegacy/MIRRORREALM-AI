@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
+  <meta name="theme-color" content="#05070c" />
+  <title>MIRRORREALM AI</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main id="app">
+    <video id="camera" autoplay playsinline muted></video>
+    <canvas id="fx"></canvas>
+    <div id="scanGrid" class="scan-grid"></div>
+
+    <header class="topbar glass">
+      <button id="settingsBtn" class="icon-btn">⚙️</button>
+      <div class="brand-wrap">
+        <div class="brand">MIRRORREALM</div>
+        <div id="modeBadge" class="mode-badge">CHECKING AR…</div>
+      </div>
+      <button id="cameraFlipBtn" class="icon-btn">↻</button>
+    </header>
+
+    <section id="permissionCard" class="center-card glass">
+      <div class="logo-orb">◉</div>
+      <h1>MIRRORREALM AI</h1>
+      <p>Gerçek dünyayı paralel bir sandbox dünyasına dönüştür.</p>
+      <button id="startBtn" class="primary-btn">OYNA</button>
+      <small>Kamera görüntüsü varsayılan olarak cihazında kalır.</small>
+    </section>
+
+    <section id="scanHud" class="scan-hud hidden">
+      <div class="scan-ring"></div>
+      <h2>ÇEVRENİ TARA…</h2>
+      <p id="scanText">Yüzeyler aranıyor</p>
+      <div class="progress"><span id="scanProgress"></span></div>
+    </section>
+
+    <div id="readyToast" class="ready-toast hidden">DÜNYA HAZIR</div>
+
+    <aside id="aiPanel" class="panel glass hidden">
+      <div class="panel-head"><strong>✨ AI WORLD GENERATOR</strong><button data-close="aiPanel">×</button></div>
+      <textarea id="aiPrompt" placeholder="Dünyanı tarif et…\nÖrn: Odamı büyülü bir buz krallığına dönüştür."></textarea>
+      <button id="aiGenerateBtn" class="primary-btn">DÜNYAYI OLUŞTUR</button>
+      <div id="aiStatus" class="status-line">AI hazır.</div>
+    </aside>
+
+    <aside id="elementsPanel" class="panel glass hidden">
+      <div class="panel-head"><strong>🔥 WORLD BRUSH</strong><button data-close="elementsPanel">×</button></div>
+      <div id="elementGrid" class="element-grid"></div>
+      <div class="hint">Bir element seç, sonra kameradaki yüzeye dokun.</div>
+    </aside>
+
+    <aside id="settingsPanel" class="panel glass hidden">
+      <div class="panel-head"><strong>⚙️ AYARLAR</strong><button data-close="settingsPanel">×</button></div>
+      <label>Grafik kalitesi
+        <select id="qualitySelect"><option>LOW</option><option selected>MEDIUM</option><option>HIGH</option><option>ULTRA</option></select>
+      </label>
+      <label class="switch-row"><span>Tarama çizgileri</span><input id="gridToggle" type="checkbox" checked /></label>
+      <div class="status-line" id="capabilityText">Cihaz özellikleri kontrol ediliyor…</div>
+    </aside>
+
+    <div class="capture-stack">
+      <button id="photoBtn" class="round-action">📷</button>
+      <button id="voiceBtn" class="round-action">🎙️</button>
+    </div>
+
+    <nav class="toolbar glass">
+      <button data-tool="elements">🔥<span>Elements</span></button>
+      <button data-tool="portal">🌀<span>Portal</span></button>
+      <button data-tool="ai">✨<span>AI</span></button>
+      <button data-tool="spawn">🐉<span>Spawn</span></button>
+      <button data-tool="chaos">🌪️<span>Chaos</span></button>
+      <button data-tool="games">🎮<span>Games</span></button>
+    </nav>
+
+    <div id="unsupportedNote" class="unsupported hidden"></div>
+  </main>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
